@@ -5,7 +5,7 @@ app = Flask(__name__)
 api = Api(app)
 
 STUDENTS = {
-    '1': {'name':'Robert', 'age':64, 'spec':'Azure'},
+    '1': {'name':'Robertje', 'age':64, 'spec':'Azure'},
     '2': {'name':'John', 'age':54, 'spec':'SQL'},
     '3': {'name':'Mariella', 'age':42, 'spec':'Architect'}
 }
