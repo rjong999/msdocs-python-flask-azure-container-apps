@@ -7,7 +7,8 @@ api = Api(app)
 STUDENTS = {
     '1': {'name':'Robertje', 'age':64, 'spec':'Azure'},
     '2': {'name':'John', 'age':54, 'spec':'SQL'},
-    '3': {'name':'Mariella', 'age':42, 'spec':'Architect'}
+    '3': {'name':'Mariella', 'age':42, 'spec':'Architect'},
+    '3': {'name':'Maria', 'age':42, 'spec':'Cleaner'}
 }
 
 SPECIALITIES = {
@@ -37,8 +38,14 @@ class SpecList(Resource):
     def get(self):
          return SPECIALITIES
 
+class DummyStuff(Resource):
+    def get(self):
+        return ("Dummy")
+
+
 api.add_resource(StudentList, '/students')
 api.add_resource(SpecList, '/specialities')
+api.add_resource(DummyStuff, '/dummy')
 
 if __name__ == '__main__':
 	app.run(host="0.0.0.0")
