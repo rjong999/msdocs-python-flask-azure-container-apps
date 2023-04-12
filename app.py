@@ -1,16 +1,14 @@
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
-import pyodbc
+import pymssql
 
 app = Flask(__name__)
 api = Api(app)
 
-server = 'tcp:mysqlservertjong999.database.windows.net,1433' 
+server = 'mysqlservertjong999.database.windows.net' 
 database = 'mySampleDatabase' 
 username = 'azureuser' 
 password = 'P0rsche911' 
-# ENCRYPT defaults to yes starting in ODBC Driver 18. It's good to always specify ENCRYPT=yes on the client side to avoid MITM attacks.
-
 
 STUDENTS = {
     '1': {'name':'Robertje', 'age':64, 'spec':'Azure'},
@@ -48,11 +46,11 @@ class SpecList(Resource):
 
 class SQL(Resource):
     def get(self):
-        cnxn = pyodbc.connect('DRIVER={ODBC Driver 18 for SQL Server};SERVER='+server+';DATABASE='+database+';ENCRYPT=yes;UID='+username+';PWD='+ password)
-        cursor = cnxn.cursor()
-        cursor.execute("SELECT @@version;") 
-        row = cursor.fetchone() 
-        return row[0]
+        conn = pymssql.connect(server=server, user=username, password=password, database=database) 
+        cursor = conn.cursor()  
+        cursor.execute('SELECT c.CustomerID, c.CompanyName,COUNT(soh.SalesOrderID) AS OrderCount FROM SalesLT.Customer AS c LEFT OUTER JOIN SalesLT.SalesOrderHeader AS soh ON c.CustomerID = soh.CustomerID GROUP BY c.CustomerID, c.CompanyName ORDER BY OrderCount DESC;')  
+        row = cursor.fetchone()  
+        return row[1]
 
 api.add_resource(StudentList, '/students')
 api.add_resource(SpecList, '/specialities')
