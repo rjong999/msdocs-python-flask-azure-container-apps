@@ -8,6 +8,8 @@ RUN pip install flask
 
 RUN pip install flask-restful
 
+RUN pip install pyodbc
+
 COPY requirements.txt requirements.txt
 
 COPY app.py app.py
