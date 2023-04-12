@@ -1,8 +1,16 @@
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
+import pyodbc
 
 app = Flask(__name__)
 api = Api(app)
+
+server = 'tcp:mysqlservertjong999.database.windows.net,1433' 
+database = 'mySampleDatabase' 
+username = 'azureuser' 
+password = 'P0rsche911' 
+# ENCRYPT defaults to yes starting in ODBC Driver 18. It's good to always specify ENCRYPT=yes on the client side to avoid MITM attacks.
+
 
 STUDENTS = {
     '1': {'name':'Robertje', 'age':64, 'spec':'Azure'},
@@ -38,14 +46,17 @@ class SpecList(Resource):
     def get(self):
          return SPECIALITIES
 
-class DummyStuff(Resource):
+class SQL(Resource):
     def get(self):
-        return ("Dummy")
-
+        cnxn = pyodbc.connect('DRIVER={ODBC Driver 18 for SQL Server};SERVER='+server+';DATABASE='+database+';ENCRYPT=yes;UID='+username+';PWD='+ password)
+        cursor = cnxn.cursor()
+        cursor.execute("SELECT @@version;") 
+        row = cursor.fetchone() 
+        return row[0]
 
 api.add_resource(StudentList, '/students')
 api.add_resource(SpecList, '/specialities')
-api.add_resource(DummyStuff, '/dummy')
+api.add_resource(SQL, '/SQL')
 
 if __name__ == '__main__':
 	app.run(host="0.0.0.0")
