@@ -28,7 +28,7 @@ SPECIALITIES = {
     '2' : {'name':'SQL'}
 }
 parser = reqparse.RequestParser()
-@cross_origin()
+
 
 class StudentList(Resource):
     def get(self):
