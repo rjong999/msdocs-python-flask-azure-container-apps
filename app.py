@@ -1,8 +1,14 @@
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
+from flask_cors import CORS, cross_origin
+
 import pymssql
 
 app = Flask(__name__)
+
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
 api = Api(app)
 
 server = 'mysqlservertjong999.database.windows.net' 
@@ -22,6 +28,7 @@ SPECIALITIES = {
     '2' : {'name':'SQL'}
 }
 parser = reqparse.RequestParser()
+@cross_origin()
 
 class StudentList(Resource):
     def get(self):

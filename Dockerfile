@@ -9,6 +9,8 @@ RUN pip install flask
 
 RUN pip install flask-restful
 
+RUN pip install flask-cors
+
 COPY requirements.txt requirements.txt
 
 COPY app.py app.py
